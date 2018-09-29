@@ -28,13 +28,26 @@ class user_interface():
 		arguments = self.parser.parse_args()
 		self.urls = arguments.urls
 		try:
-			self.start_line = arguments.l
-			self.file_path = arguments.p
+			if arguments.starting_line != None:
+				self.start_line = int(arguments.starting_line)
+			else:
+				self.start_line = 0
 		except AttributeError:
 			pass
 
+		try:
+			self.file_path = arguments.path
+			if self.file_path == None:
+				self.file_path = ""
+		except AttributeError:
+			pass
+
+		print(self.file_path)
+
+
 	def _console_mode(self):
-		self.current_line = input("start line: ")
+		self.current_line = int(input("start line: "))
+		self.urls = input("main_urls")
 
 
 	def get_values(self):

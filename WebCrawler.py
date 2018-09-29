@@ -3,7 +3,7 @@ import time
 from utils import *
 from interface import user_interface
 
-
+use_main_urls = False
 valid_urls_file = "urls.txt"
 not_valid_urls_file = "nv_urls.csv"
 interface = user_interface(user_interface.ARG_MODE)
@@ -32,9 +32,8 @@ def search_urls(url):
         if valid_url(urls[i]):
             valid_urls.append(urls[i])
         else:
-            if urls[i][:6] != "?lang=" and urls[i][:24] != "https://www.instagram.co":
-                nv_urls.append((url, urls[i]))
-                print(url, urls[i], sep="\t")
+            nv_urls.append((url, urls[i]))
+
     a = valid_urls
     return [valid_urls, nv_urls]
 
@@ -55,9 +54,11 @@ def save_urls(urls):
                 else:
                     unique = True
 
-            if unique:
+            if unique and use_main_urls:
                 if urls[0][i].split("/")[2] == main_urls[0] or urls[0][i].split("/")[2] == main_urls[1]:
                     table.write(urls[0][i] + "\n")
+            elif unique and not use_main_urls:
+                table.write(urls[0][i] + "\n")
     with open(not_valid_urls_file, "a", encoding="utf-8") as nv_table:
         for i in range(len(urls[1])):
             nv_table.write(urls[1][i][0] + "," + urls[1][i][1] + "\n")
@@ -75,7 +76,6 @@ def main():
                 save_urls(urls)
             time_took = round(time.time() - first_time,4)
             print(current_line, time_took, current_url, sep="\t")
-            time_table.write(str(time_took) + ",")
             current_line += 1
     except IndexError:
         print("END OF FILE REACHED")
@@ -87,8 +87,12 @@ if __name__ == '__main__':
     file_path = interface.get_values()["file_path"]
     valid_urls_file = file_path + valid_urls_file
     not_valid_urls_file = file_path + not_valid_urls_file
-
-    time_table = open("time_table.csv", "w")
+    
+    try:
+        if (open(valid_urls_file).read() == ""):
+            file_setup(valid_urls_file, list_to_str(main_urls))
+    except FileNotFoundError:
+        file_setup(valid_urls_file,list_to_str(main_urls))
 
     while True:
         main()
