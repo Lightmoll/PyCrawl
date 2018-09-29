@@ -6,7 +6,6 @@ from interface import user_interface
 
 valid_urls_file = "urls.txt"
 not_valid_urls_file = "nv_urls.csv"
-main_urls = ["i-onconnect.com", "members.i-onconnect.com"]
 interface = user_interface(user_interface.ARG_MODE)
 
 def get_urls(url):
@@ -83,13 +82,13 @@ def main():
         quit(0)
 
 if __name__ == '__main__':
+    main_urls = interface.get_values()["urls"]
     current_line = interface.get_values()["start_line"]
-    #current_line = 0
+    file_path = interface.get_values()["file_path"]
+    valid_urls_file = file_path + valid_urls_file
+    not_valid_urls_file = file_path + not_valid_urls_file
+
     time_table = open("time_table.csv", "w")
 
     while True:
         main()
-
-current_line = 0
-time_table = open("time_table.csv", "w")
-main()
