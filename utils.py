@@ -46,13 +46,18 @@ def check_dup_in_list(_list, start_i=0, start_j=0):
 
 def valid_url(url):
 	try:
-		if requests.head(url).ok:
-			return True
+		head = requests.head(url)
+		print(head.ok)
+		if head.ok:
+			print(head.headers._store["content-type"][1][:9])
+			if (head.headers._store["content-type"][1][:9] == "text/html"):
+				return True
 		return False
 	except (requests.exceptions.InvalidSchema,
 	        requests.exceptions.ConnectionError,
 	        requests.ReadTimeout,
-	        requests.exceptions.MissingSchema):
+	        requests.exceptions.MissingSchema) as e:
+		print(e)
 		return False
 
 
