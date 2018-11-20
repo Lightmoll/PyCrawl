@@ -1,4 +1,5 @@
 import requests
+import urllib3
 import os
 
 
@@ -47,17 +48,19 @@ def check_dup_in_list(_list, start_i=0, start_j=0):
 def valid_url(url):
 	try:
 		head = requests.head(url)
-		print(head.ok)
-		if head.ok:
-			print(head.headers._store["content-type"][1][:9])
+		if (head.status_code == 200):
 			if (head.headers._store["content-type"][1][:9] == "text/html"):
 				return True
 		return False
 	except (requests.exceptions.InvalidSchema,
+			requests.exceptions.InvalidURL,
 	        requests.exceptions.ConnectionError,
 	        requests.ReadTimeout,
-	        requests.exceptions.MissingSchema) as e:
-		print(e)
+	        requests.exceptions.MissingSchema,
+			urllib3.exceptions.LocationParseError,
+			requests.exceptions.InvalidURL,
+			requests.exceptions.SSLError,
+	        KeyError):
 		return False
 
 

@@ -1,6 +1,5 @@
 import argparse
 
-
 class user_interface():
 	ARG_MODE = 1
 	CONSOLE_MODE = 2
@@ -34,7 +33,6 @@ class user_interface():
 				self.start_line = 0
 		except AttributeError:
 			pass
-
 		try:
 			self.file_path = arguments.path
 			if self.file_path == None:
@@ -46,8 +44,9 @@ class user_interface():
 
 
 	def _console_mode(self):
-		self.current_line = int(input("start line: "))
-		self.urls = input("main_urls")
+		self.start_line = int(input("start line: "))
+		self.urls = input("main_urls: ")
+		self.file_path = input("File Path: ")
 
 
 	def get_values(self):
