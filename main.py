@@ -1,10 +1,9 @@
 import re
-from multiprocessing import Process, Queue
-
 
 from multiprocessing import Process, Queue
 from Database import Database
 from utils import *
+
 from interface import user_interface
 
 def get_urls(url):
